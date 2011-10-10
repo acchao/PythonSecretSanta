@@ -9,7 +9,7 @@ Rough Draft Thoughts:
 4. Donations to non profit organizations can be requested in lieu of gift
 5. Links to wishlists in profiles (newegg, thinkgeek, amazon, etc)
 6. Profiles should have "interests" and "dislikes" 
-7. important to note to factor in intl. shipping
+7. Important to note to factor in intl. shipping. Also, often, it's possible to order from a local store (like amazon.co.uk or a local shop) without incurring crazy shipping.
 8. 
 
 
