@@ -10,7 +10,8 @@ Rough Draft Thoughts:
 5. Links to wishlists in profiles (newegg, thinkgeek, amazon, etc)
 6. Profiles should have "interests" and "dislikes" 
 7. Important to note to factor in intl. shipping. Also, often, it's possible to order from a local store (like amazon.co.uk or a local shop) without incurring crazy shipping.
-8. 
+    7a. Might also want to match gifters/giftees by location (at least within the same country) to avoid int'l shipping.
+8.  
 
 
 Sites to link to:
