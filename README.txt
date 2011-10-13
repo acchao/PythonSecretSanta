@@ -51,7 +51,7 @@ gift received
 
 
 
-I also want to propose that we establish some dates - all good swaps and gift exchanges have to have deadlines or they get out of hand pretty quickly:
+I (Barbara) also want to propose that we establish some dates - all good swaps and gift exchanges have to have deadlines or they get out of hand pretty quickly:
     a. Deadline for signing up (after this date, gifter-to-giftee assignments are made among verified users)
     b. Deadline for shipping a gift (No way to enforce this of course, but recommending a date might encourage accountability - if a user does not mark his gift as shipped by this date, what happens? Anything?)
     c. Deadline for receiving a gift (Not so much a deadline as an expected date.  If a giftee has not received his gift by a certain date, is there any recourse against the gifter?)
