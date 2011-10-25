@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    : Log In
+{% endblock %}
+
+{% block content %}
+
+    Log In<br /><br />
+
+    <form method='post' action='./'>{% csrf_token %}
+        {{ form.username.label }}:<br />
+        {{ form.username }}<br />
+        {{ form.password.label }}:<br />
+        {{ form.password }}<br />
+        <input type='submit' value='Log In' /><br />
+        <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}/{% endif %}" />
+    </form>
+    {% if form.errors %}Your username and password didn't match. Please try again.{% endif %}
+
+    <br /><br />
+
+    Or <a href="/register/">click here to register</a>.
+
+
+{% endblock %}
+

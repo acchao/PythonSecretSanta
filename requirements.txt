@@ -1,0 +1,5 @@
+# Pip requirements file
+# One requirement per line, format: "<python package name>[==<specific version>]
+
+Django==1.3.1
+

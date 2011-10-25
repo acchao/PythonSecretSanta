@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block page_title %}Registration Complete{% endblock %}
+
+{% block title %}Registration Complete{% endblock %}
+
+{% block content %}
+
+    You signed up as <b>{{ request.session.new_username }}</b>.
+    <br /><br />
+    Check your inbox at <b>{{ request.session.new_email }}</b> for an activation link.
+    <br /><br />
+    In the meantime, <a href="/">click here</a> to visit the <a href="/">home page</a>.
+
+{% endblock %}
+

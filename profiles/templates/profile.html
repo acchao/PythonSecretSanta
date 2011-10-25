@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block page_title %}Your Profile{% endblock %}
+
+{% block content %}
+
+{% if error_message %}
+
+    Error: {{ error_message }}
+
+{% else %}
+
+  {% if form %}
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% if field.errors %}
+            <div class="form_error_field">
+                {{ field.label }}
+                {{ field.errors }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <form enctype="multipart/form-data" action="." method="post">{% csrf_token %}
+
+    <div style="float: left;">
+    {{ form.email.label_tag }}<br />
+    {{ form.email }}<br /><br />
+
+    {{ form.first_name.label_tag }}<br />
+    {{ form.first_name.as_widget }}<br /><br />
+
+    {{ form.last_name.label_tag }}<br /> {{ form.last_name.as_widget }}<br /><br />
+    {{ form.address.label_tag }}<br /> {{ form.address.as_widget }}<br /><br />
+    {{ form.city.label_tag }}<br /> {{ form.city.as_widget }}<br /><br />
+    {{ form.state.label_tag }}<br /> {{ form.state.as_widget }}<br /><br />
+    {{ form.postal_code.label_tag }}<br /> {{ form.postal_code.as_widget }}<br /><br />
+    {{ form.country.label_tag }}<br /> {{ form.country.as_widget }}<br /><br />
+    </div>
+
+    <div style="float: left; margin-left: 20px;">
+    {{ form.social_proof.label_tag }}<br /> {{ form.social_proof.as_widget }}<br /><br />
+    {{ form.likes.label_tag }}<br /> {{ form.likes.as_widget }}<br /><br />
+    {{ form.dislikes.label_tag }}<br /> {{ form.dislikes.as_widget }}<br /><br />
+    <input type="submit" value="Save Your Profile" /><br />
+    </div>
+
+    </form>
+
+  {% else %}
+
+    <div style="float: left;">
+    <b>Profile for: {{ profile.user.username }}</b><br />
+    <br />
+    <label>Email Address:</label> {{ profile.user.email }}<br />
+    <label>First Name:</label> {{ profile.first_name }}<br />
+    <label>Last Name:</label> {{ profile.last_name }}<br />
+    <label>City:</label> {{ profile.city }}<br />
+    <label>State:</label> {{ profile.state }}<br />
+    <label>Country:</label> {{ profile.country }}<br />
+    <label>Postal Code:</label> {{ profile.postal_code }}<br />
+    <label>Your web site:</label> {{ profile.social_proof }}<br />
+    <label>Your web site verified:</label> {{ profile.social_proof_verified }}<br />
+    <br />
+    <a href="/edit/{{ user }}/">Edit Your Profile</a><br />
+    </div>
+
+    <div style="float: left; margin-left: 20px;">
+    <!-- TODO: populate these two blocks with sender/recipient data -->
+    {% if giftee %}
+        Send a gift to this person:<br /><br />
+        Your giftee's likes/wish lists:<br /><br />
+        And dislikes:<br /><br />
+        Form: check here when you have sent your gift<br /><br />
+    {% endif %}
+    {% if gifter %}
+        You'll be getting a gift, but we can't tell you who it's from.<br /><br />
+        {% if giftsent %}Your gift was sent on this date: {% endif %
+    {% endif %}
+    </div>
+
+  {% endif %}
+
+{% endif %}
+
+{% endblock %}

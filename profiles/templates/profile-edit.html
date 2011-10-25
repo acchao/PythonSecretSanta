@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+     : Your Profile
+{% endblock %}
+
+{% block title %}Hello, {{ user.username }}{% endblock %}
+
+{% block content %}
+
+{% if error_message %}
+
+    You've reached this page in error:<br />
+    {{ error_message }}
+
+{% else %}
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% if field.errors %}
+            <div class="form_error_field">
+                {{ field.label }}
+                {{ field.errors }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <form enctype="multipart/form-data" action="." method="post">{% csrf_token %}
+    {{ form.email.label_tag }}<br /> {{ form.email }}<br />
+    {{ form.first_name.label_tag }}<br /> {{ form.first_name.as_widget }}<br />
+    {{ form.last_name.label_tag }}<br /> {{ form.last_name.as_widget }}<br />
+    {{ form.address.label_tag }}<br /> {{ form.address.as_widget }}<br />
+    {{ form.city.label_tag }}<br /> {{ form.city.as_widget }}<br />
+    {{ form.state.label_tag }}<br /> {{ form.state.as_widget }}<br />
+    {{ form.postal_code.label_tag }}<br /> {{ form.postal_code.as_widget }}<br />
+    {{ form.country.label_tag }}<br /> {{ form.country.as_widget }}<br />
+    {{ form.social_proof.label_tag }}<br /> {{ form.social_proof.as_widget }}<br />
+    {{ form.likes.label_tag }}<br /> {{ form.likes.as_widget }}<br />
+    {{ form.dislikes.label_tag }}<br /> {{ form.dislikes.as_widget }}<br />
+    <input type="submit" value="Save Your Profile" /><br />
+    </form>
+
+    <p><a href="/accounts/password/reset/">Reset Your Password</a></p>
+
+{% endif %}
+
+{% endblock %}
