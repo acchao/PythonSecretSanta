@@ -2,9 +2,9 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
-from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+# from django.contrib.sites.models import Site
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -18,7 +18,7 @@ def profile(request):
     """
     View the profile if it exists; return the create template if it doesn't.
     If there is a username in the request that doesn't match the logged in user, 
-        return an error page.
+        return an error message.
     """
     template_name = 'profile.html'
 
@@ -48,7 +48,9 @@ def profile(request):
 
     data = { 'profile': profile, 'form': form, }
 
-    return render_to_response(template_name, data, context_instance=RequestContext(request))
+    return render_to_response(template_name, 
+                              data, 
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -77,7 +79,9 @@ def edit(request,username):
 
     data = { 'profile': profile, 'form': form, 'username': username }
 
-    return render_to_response(template_name, data, context_instance=RequestContext(request))
+    return render_to_response(template_name, 
+                              data, 
+                              context_instance=RequestContext(request))
 
 
 def has_permission(request_user, request_username, username):

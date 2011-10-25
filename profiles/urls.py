@@ -5,7 +5,8 @@ from django.contrib.auth import views
 from secretsanta.profiles import views
 
 urlpatterns = patterns('',
-    url(r'^edit/(?P<username>\w+)/$',   views.edit,             name='profiles_edit'),
-    url(r'^$',                          views.profile,          name='profiles_profile'),
+    url(r'^edit/(?P<username>\w+)/$', views.edit,     name='profiles_edit'),
+    # all other views lead to profile:
+    url(r'^$',                        views.profile,  name='profiles_profile'),
 )
 

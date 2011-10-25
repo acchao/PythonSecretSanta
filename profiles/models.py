@@ -9,7 +9,8 @@ from django.contrib.auth.models import User
 
 class ParticipantProfile(models.Model):
     """
-    A basic profile which stores user information after the account has been activated.
+    A basic profile which stores user information after the account 
+        has been activated.
     Use this model as the value of the ``AUTH_PROFILE_MODULE`` setting
     """
     user = models.ForeignKey(User, editable=False)
@@ -37,7 +38,7 @@ class ParticipantProfile(models.Model):
     @staticmethod
     def create_or_update(user_id, data):
         """
-        Pass in a user id and a data dictionary to update a user profile or create one
+        Pass in a user id and a data dict to update a user profile or create one
         """
         #clean up the data
         for k, v in data.copy().iteritems():
@@ -49,8 +50,10 @@ class ParticipantProfile(models.Model):
                 except:
                     del data[k]
 
-        if data['first_name']: data['first_name'] = str(data['first_name']).title()
-        if data['last_name']: data['last_name'] = str(data['last_name']).title()
+        if data['first_name']: 
+            data['first_name'] = str(data['first_name']).title()
+        if data['last_name']: 
+            data['last_name'] = str(data['last_name']).title()
 
         try:
             record = ParticipantProfile.objects.get(user=user_id)
@@ -68,18 +71,14 @@ class ParticipantProfile(models.Model):
 
 class RecipientMap(models.Model):
     """
-    maps gift senders to recipients
-    when a user has registered and Python community participation 
+    Maps gift senders to recipients
+    When a user has registered and Python community participation 
         confirmed ('social_proof_verified'), a record is written
-        to this table assigning a gift recipient to the participant
-    includes optional 'sent' and 'received' dates
+        to this table assigning a gift recipient to the participant.
+    Includes optional 'sent' and 'received' dates
     """
     participant_id = models.ForeignKey(User, editable=False, related_name='participant')
     recipient_id = models.ForeignKey(User, editable=False, related_name='recipient')
     gift_shipped = models.DateTimeField(null=True, blank=True, editable=False)
     gift_received = models.DateTimeField(null=True, blank=True, editable=False)
-
-
-
-
 

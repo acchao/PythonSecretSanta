@@ -25,9 +25,12 @@ class RegistrationManager(models.Manager):
         - If the key is valid and has not expired, return the 'User' after activating.
         - If the key is not valid or has expired, return 'False'.
         - If the key is valid but the 'User' is already active, return 'False'.
-        To prevent reactivation of an account which has been deactivated by site administrators, the key is reset to 'ALREADY_ACTIVATED' after successful activation.
+        To prevent reactivation of an account which has been deactivated by site 
+            administrators, the key is reset to 'ALREADY_ACTIVATED' after 
+            successful activation.
         """
-        # Make sure the key we're trying conforms to the pattern of a SHA1 hash; if it doesn't, no point trying to look it up in the database.
+        # Make sure the key we're trying conforms to the pattern of a SHA1 hash; 
+        # if it doesn't, no point trying to look it up in the database.
         if SHA1_RE.search(activation_key):
             try:
                 profile = self.get(activation_key=activation_key)
@@ -44,7 +47,8 @@ class RegistrationManager(models.Manager):
     
     def create_inactive_user(self, username, password, email, send_email=True):
         """
-        Create a new, inactive 'User', generate a 'RegistrationProfile' and email its activation key to the 'User', returning the new 'User'.
+        Create a new, inactive 'User', generate a 'RegistrationProfile' and 
+            email its activation key to the 'User', returning the new 'User'.
         
         To disable the email, call with 'send_email=False'.
         """
@@ -57,17 +61,24 @@ class RegistrationManager(models.Manager):
         if send_email:
             from django.core.mail import send_mail
             current_site = Site.objects.get_current()
-            subject = render_to_string('activation_email_subject.txt', { 'site': current_site }) # Email subject *must not* contain newlines
+            subject = render_to_string('activation_email_subject.txt', 
+                                       { 'site': current_site })
             subject = ''.join(subject.splitlines())
-            message = render_to_string('activation_email.txt', { 'activation_key': registration_profile.activation_key, 'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS, 'site': current_site })
+            message = render_to_string('activation_email.txt', 
+                                       {'activation_key': registration_profile.activation_key, 
+                                        'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS, 
+                                        'site': current_site })
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [new_user.email])
         return new_user
 
     def create_profile(self, user):
         """
-        Create a 'RegistrationProfile' for a given 'User', and return the 'RegistrationProfile'.
+        Create a 'RegistrationProfile' for a given 'User', 
+        and return the 'RegistrationProfile'.
         
-        The activation key for the 'RegistrationProfile' will be a SHA1 hash, generated from a combination of the ``User``'s username and a random salt.
+        The activation key for the 'RegistrationProfile' 
+        will be a SHA1 hash, generated from a combination of 
+        the ``User``'s username and a random salt.
         """
         salt = sha.new(str(random.random())).hexdigest()[:5]
         activation_key = sha.new(salt+user.username).hexdigest()
@@ -75,11 +86,14 @@ class RegistrationManager(models.Manager):
         
     def delete_expired_users(self):
         """
-        Remove expired instances of 'RegistrationProfile' and their associated 'User's.
+        Remove expired instances of 'RegistrationProfile' 
+        and their associated 'User's.
         
-        Any 'User' who is both inactive and has an expired activation key will be deleted.
+        Any 'User' who is both inactive and has an 
+        expired activation key will be deleted.
         
-        To disable an account while keeping it in the database, just delete the RegistrationProfile.
+        To disable an account while keeping it in the database, 
+        just delete the RegistrationProfile.
         """
         for profile in self.all():
             if profile.activation_key_expired():
@@ -87,9 +101,11 @@ class RegistrationManager(models.Manager):
                 if not user.is_active:
                     user.delete()
 
+
 class RegistrationProfile(models.Model):
     """
-    A simple profile which stores an activation key for use during user account registration.
+    A simple profile which stores an activation key 
+    for use during user account registration.
     """
     user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
     activation_key = models.CharField(_('activation key'), max_length=40)
@@ -105,7 +121,8 @@ class RegistrationProfile(models.Model):
     
     def activation_key_expired(self):
         """
-        Determine whether this RegistrationProfile's activation key has expired, returning a boolean 'True' if the key has expired.
+        Determine whether this RegistrationProfile's activation key has 
+        expired, returning a boolean 'True' if the key has expired.
         """
         expiration_date = datetime.timedelta(days=settings.ACCOUNT_ACTIVATION_DAYS)
         return self.activation_key == "ALREADY_ACTIVATED" or (self.user.date_joined + expiration_date <= datetime.datetime.now())

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseNotFound, Http404, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django import forms 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -20,12 +20,17 @@ from secretsanta.profiles.models import ParticipantProfile
 def activate(request, activation_key, template_name='activate.html'):
     """
     Activate a 'User' account, if their key is valid and hasn't expired.
-    account: The 'User' object corresponding to the account, if the activation was successful. 'False' if the activation was not successful.
-    expiration_days: The number of days for which activation keys stay valid after registration.
 
-    If there are profile values in the session data, write those to the user profile when the account is created.
+    Account: The 'User' object corresponding to the account, if the
+    activation was successful. 'False' if the activation was not successful.
+
+    Expiration_days: The number of days for which 
+    activation keys stay valid after registration.
+
+    If there are profile values in the session data, write those to the 
+    user profile when the account is created.
     """
-    activation_key = activation_key.lower() # Normalize before trying anything with it.
+    activation_key = activation_key.lower()
     account = RegistrationProfile.objects.activate_user(activation_key)
 
     try:
@@ -38,14 +43,21 @@ def activate(request, activation_key, template_name='activate.html'):
         session_data = dict(request.session.items())
         UserProfile.create_or_update(user_id, session_data)
 
-    return render_to_response(template_name, {'account': account, 'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS }, context_instance=RequestContext(request))
+    data = {'account': account, 'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS}
 
-def signup(request, success_url='/accounts/signup/complete/', form_class=RegistrationForm, profile_callback=None, template_name='signup_form.html'):
+    return render_to_response(template_name, 
+                              data, 
+                              context_instance=RequestContext(request))
+
+def signup(request):
     """
     Allow a new user to register an account.
-
-    TODO: If the user is already logged in, redirect to profile
     """
+    success_url='/accounts/signup/complete/'
+    form_class=RegistrationForm
+    profile_callback=None
+    template_name='signup_form.html'
+
     if request.method == 'POST':
         form = form_class(data=request.POST, files=request.FILES)
         if form.is_valid():
@@ -57,11 +69,14 @@ def signup(request, success_url='/accounts/signup/complete/', form_class=Registr
     else:
         form = form_class()
 
-    return render_to_response(template_name, { 'form': form }, context_instance=RequestContext(request))
+    return render_to_response(template_name, 
+                              {'form': form}, 
+                              context_instance=RequestContext(request))
 
 def get_initial_data(profile_obj):
     """
-    Given a user profile object, returns a dictionary representing its fields, suitable for passing as the initial data of a form.
+    Given a user profile object, returns a dict representing 
+    its fields, suitable for passing as the initial data of a form.
     """
     opts = profile_obj._meta
     data_dict = {}

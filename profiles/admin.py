@@ -11,7 +11,7 @@ class ParticipantProfileAdmin(admin.ModelAdmin):
 
 class RecipientMapAdmin(admin.ModelAdmin):
     list_filter = ('gift_shipped','gift_received')
-    list_display = ('participant_id', 'recipient_id','gift_shipped','gift_received')
+    list_display = ('participant_id','recipient_id','gift_shipped','gift_received')
 
 admin.site.register(ParticipantProfile, ParticipantProfileAdmin)
 admin.site.register(RecipientMap, RecipientMapAdmin)
