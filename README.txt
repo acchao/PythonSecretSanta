@@ -20,15 +20,10 @@ Sites to link to:
 - http://hackerthings.com/
 - ???
 
+profile fixtures: python manage.py loaddata profiles
+
 
 TODO:
-
-profiles admin fixes
-    - need to be able to create recipientmap records through the admin
-    - country field in empty profile - populate with countries data
-    - include User field
-
-create some seed data for the sqlite db
 
 profiles/models.py - decide how to label this social_proof field in the forms
 

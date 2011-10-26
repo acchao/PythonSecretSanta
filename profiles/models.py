@@ -13,7 +13,7 @@ class ParticipantProfile(models.Model):
         has been activated.
     Use this model as the value of the ``AUTH_PROFILE_MODULE`` setting
     """
-    user = models.ForeignKey(User, editable=False)
+    user = models.ForeignKey(User)
     first_name = models.CharField(max_length=40, blank=False)
     last_name = models.CharField(max_length=40, blank=False)
     address = models.CharField(max_length=100, blank=False)
@@ -77,8 +77,12 @@ class RecipientMap(models.Model):
         to this table assigning a gift recipient to the participant.
     Includes optional 'sent' and 'received' dates
     """
-    participant_id = models.ForeignKey(User, editable=False, related_name='participant')
-    recipient_id = models.ForeignKey(User, editable=False, related_name='recipient')
-    gift_shipped = models.DateTimeField(null=True, blank=True, editable=False)
-    gift_received = models.DateTimeField(null=True, blank=True, editable=False)
+    participant = models.ForeignKey(User, related_name='participant')
+    recipient = models.ForeignKey(User, related_name='recipient')
+    gift_shipped = models.DateField(null=True, blank=True)
+    gift_received = models.DateField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['gift_shipped']
+        unique_together = ("participant", "recipient",)
 
