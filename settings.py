@@ -81,7 +81,7 @@ INSTALLED_APPS = (
 ACCOUNT_ACTIVATION_DAYS = 1
 AUTH_PROFILE_MODULE = 'profiles.ParticipantProfile'
 
-LOGOUT_URL = '/accounts/login/'
+LOGOUT_URL = '/login/'
 
 try:
     from local_settings import *

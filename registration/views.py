@@ -53,7 +53,7 @@ def signup(request):
     """
     Allow a new user to register an account.
     """
-    success_url='/accounts/signup/complete/'
+    success_url='/registration/complete/'
     form_class=RegistrationForm
     profile_callback=None
     template_name='signup_form.html'

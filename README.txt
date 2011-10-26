@@ -23,6 +23,13 @@ Sites to link to:
 
 TODO:
 
+profiles admin fixes
+    - need to be able to create recipientmap records through the admin
+    - country field in empty profile - populate with countries data
+    - include User field
+
+create some seed data for the sqlite db
+
 profiles/models.py - decide how to label this social_proof field in the forms
 
 assignrecipient.py - write the methods to:
@@ -39,8 +46,6 @@ Proposed recipient assignment algorithm:
         - the gifter's profile should also display the recipient's contact info, likes/dislikes
         - the giftee's profile should indicate that he/she has been matched with a gift sender, nothing else
 
-registration/views.py - If the user is already logged in, redirect to profile (site root)
-
 get registration working (having a problem testing with local SMTP)
 
 decide on dates:
@@ -49,6 +54,4 @@ decide on dates:
     c. Deadline for receiving a gift (Not so much a deadline as an expected date.  If a giftee has not received his gift by a certain date, is there any recourse against the gifter?)
     
 Probably need some kind of privacy policy, or language to remind users that their personal contact information will be visible to another user.
-
-Lots of pep8 cleanup
 
