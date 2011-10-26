@@ -1,0 +1,36 @@
+[
+  {
+    "model": "profiles.participantprofile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "first_name": "TestUser",
+      "last_name": "One",
+      "address": "815 Main Street",
+      "city": "Lawrence",
+      "state": "KS",
+      "postal_code": "66044",
+      "country": "US",
+      "social_proof": "https://github.com/jnoller/PythonSecretSanta/",
+      "likes": "ponies",
+      "dislikes": ""
+    }
+  },
+  {
+    "model": "profiles.participantprofile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "first_name": "TestUser",
+      "last_name": "Two",
+      "address": "952 Main Street",
+      "city": "Lawrence",
+      "state": "KS",
+      "postal_code": "66044",
+      "country": "US",
+      "social_proof": "https://github.com/jnoller/PythonSecretSanta/",
+      "likes": "string cheese",
+      "dislikes": "ponies"
+    }
+  }
+]
