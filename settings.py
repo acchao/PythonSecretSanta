@@ -18,8 +18,8 @@ EMAIL_HOST_PASSWORD = ''
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'secretsantadb',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'secretsanta',
         'HOST': '',
         'USER': '',
         'PASSWORD': ''

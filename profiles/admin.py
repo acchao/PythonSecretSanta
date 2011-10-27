@@ -18,7 +18,7 @@ class CustomParticipantProfileForm(forms.ModelForm):
         model = ParticipantProfile
 
 class ParticipantProfileAdmin(admin.ModelAdmin):
-    list_display = ('fullname','id',)
+    list_display = ('fullname','id','social_proof_verified',)
     # readonly_fields=('user',)
     form = CustomParticipantProfileForm
 
