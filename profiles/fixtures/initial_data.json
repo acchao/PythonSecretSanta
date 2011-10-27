@@ -1,0 +1,91 @@
+[
+  {
+    "model": "profiles.participantprofile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "first_name": "TestUser",
+      "last_name": "One",
+      "address": "815 Main Street",
+      "city": "Lawrence",
+      "state": "KS",
+      "postal_code": "66044",
+      "country": "US",
+      "social_proof": "https://github.com/jnoller/PythonSecretSanta/",
+      "social_proof_verified": 1, 
+      "likes": "ponies",
+      "dislikes": ""
+    }
+  },
+  {
+    "model": "profiles.participantprofile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "first_name": "TestUser",
+      "last_name": "Two",
+      "address": "952 Main Street",
+      "city": "Lawrence",
+      "state": "KS",
+      "postal_code": "66044",
+      "country": "US",
+      "social_proof": "https://github.com/jnoller/PythonSecretSanta/",
+      "likes": "string cheese",
+      "dislikes": "ponies"
+    }
+  }, 
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+    	"username": "testadmin", 
+    	"first_name": "", 
+    	"last_name": "", 
+    	"is_active": true, 
+    	"is_superuser": true, 
+    	"is_staff": true, 
+    	"last_login": "2011-10-26 10:56:15", 
+    	"groups": [], 
+    	"user_permissions": [], 
+        "password": "sha1$fefe4$62ca807887062130a2c5850afab1b862ed2e7063",
+    	"email": "testadmin@test.com", 
+    	"date_joined": "2011-10-26 10:56:03"
+    }
+  }, 
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+    	"username": "testuser1", 
+    	"first_name": "", 
+    	"last_name": "", 
+    	"is_active": true, 
+    	"is_superuser": false, 
+    	"is_staff": false, 
+    	"last_login": "2011-10-27 10:48:42", 
+    	"groups": [], 
+    	"user_permissions": [], 
+    	"password": "sha1$fefe4$62ca807887062130a2c5850afab1b862ed2e7063", 
+    	"email": "test1@test.com", 
+    	"date_joined": "2011-10-27 10:48:42"
+    }
+  }, 
+  {
+    "model": "auth.user", 
+    "pk": 3, 
+    "fields": {
+  	"username": "testuser2", 
+  	"first_name": "", 
+  	"last_name": "", 
+  	"is_active": true, 
+  	"is_superuser": false, 
+  	"is_staff": false, 
+  	"last_login": "2011-10-27 10:48:52", 
+  	"groups": [], 
+  	"user_permissions": [], 
+  	"password": "sha1$4bdf4$f80d5eaecb3acfb8ee85b7c0d986fe520ddbb176", 
+  	"email": "test2@test.com", 
+  	"date_joined": "2011-10-27 10:48:52"
+    }
+  }
+]
