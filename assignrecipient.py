@@ -1,69 +1,77 @@
-import sys
-import sqlite3 as sqlite
+import sys, smtplib
+from email.mime.text import MIMEText
 
+from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 
 import secretsanta.settings as settings
+from secretsanta.profiles.models import ParticipantProfile, RecipientMap
 
-def assign(participantid):
+def assign(participant):
     """
-    Pass in the ParticipantProfile object,  
-    identify an eligible gift recipient and 
-    create the gifter-giftee record (recipientmap)
+    - Pass in the ParticipantProfile object
+    - Identify an eligible gift recipient
+    - Create the gifter-giftee record (recipientmap)
+    - Return the giftee record so mailing information can be sent to the gifter
     """
-    conn = sqlite.connect(settings.DATABASES['default']['NAME'])
-    curs = conn.cursor()
+    giftmap = []
 
-    # Get a verified User who has not already been assigned as a gift recipient yet 
-    # and whose user_id is not the same as participantid
-    t = (participantid,)
-    curs.execute("SELECT user_id FROM profiles_participantprofile WHERE \
-                 user_id NOT IN (SELECT recipient_id FROM profiles_recipientmap) \
-                 AND social_proof_verified = 'true' AND user_id != ? LIMIT 1", t)
-    print curs.fetchall()
+    try:
+        # Get a verified User who has not already been assigned as a gift recipient yet 
+        # and whose user_id is not the same as participantid
+        rec = ParticipantProfile.objects.filter(social_proof_verified=True) \
+                    .exclude(user=participant.user) \
+                    .extra(select={'exclusion': 'SELECT recipient_id FROM profiles_recipientmap'},)[:1]
+        recipient = rec[0]
+    except ParticipantProfile.DoesNotExist:
+        # TODO: What to do in case there is not a free recipient?
+        print "No available gift recipient"
+        sys.exit()
 
-    # TODO: What to do if there is not a free recipient?  
-    # seed data pre-launch?
+    # Add'l check to ensure participant is not assigned to more than one recipient
+    try:
+        r = RecipientMap.objects.get(participant=participant.id)
+    except RecipientMap.DoesNotExist:
+        # Create the recipientmap record, assigning the participant to a gift recipient
+        m = RecipientMap(participant_id=participant.pk, recipient_id=recipient.pk)
+        m.save()
 
-    # insert to profiles_recipientmap: recipient_id = , participant_id = participantid
-    # select the profile data where user_id = recipient_id and return that as 'giftmap'
+    # Select the profile data where user_id = recipient_id and return as 'giftmap'
+    # Include gift sender User object for email info
+    ge = ParticipantProfile.objects.get(user=recipient.user)
+    gr = User.objects.get(pk=participant.user_id)
+    giftmap.append(ge)
+    giftmap.append(gr)
+    return giftmap
 
-    # conn.commit()
-    curs.close()
-
-    sys.exit()
-    return giftmap 
-
-def notify(gifteeprofile,gifteremail):
+def notify(giftmap):
     """
     Send a notification email to the gifter (and giftee?)
     """
+    giftee = giftmap[0]
+    gifter = giftmap[1]
+
     fromaddr = "Python Secret Santa <admin@pythonsecretsanta.com>"
-    toaddrs = gifteremail
+    toaddrs = gifter.email
     site = 'Python Secret Santa'
 
-    message = render_to_string('gift_email.txt', {'site': site })
+    message = render_to_string('gift_email.txt', {'site': site, 'address': giftee.address })
     msg = MIMEText(message)
     msg['Subject'] = "Your Python Secret Santa gift recipient"
     msg['From'] = fromaddr
-    msg['To'] = ", ".join(toaddrs)
+    msg['To'] = toaddrs
 
     server = smtplib.SMTP('localhost')
-    # server.set_debuglevel(1)
-    server.sendmail(fromaddr, toaddrs, msg)
+    server.set_debuglevel(1)
+    server.sendmail(fromaddr, toaddrs, str(msg))
     server.quit()
 
 def main(obj):
     """
     Triggered by setting social_proof_verified to 'true' in the admin.
-
-    TODO: write the methods to:
-        1) create the gifter-giftee record (recipientmap)
-        2) send a notification email to the gifter (and giftee?)
     """
-    # print obj.id
-    giftmap = assign(obj.user_id)
-    notify(giftmap, obj.email)
+    giftmap = assign(obj)
+    notify(giftmap)
     
 if __name__ == "__main__":
     main()

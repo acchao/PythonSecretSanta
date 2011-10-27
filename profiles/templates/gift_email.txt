@@ -1,0 +1,5 @@
+Notification from {{ site }} 
+
+Your gift recipient:
+{{ address }}
+
