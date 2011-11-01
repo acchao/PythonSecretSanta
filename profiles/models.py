@@ -82,6 +82,10 @@ class RecipientMap(models.Model):
     gift_shipped = models.DateField(null=True, blank=True)
     gift_received = models.DateField(null=True, blank=True)
 
+    def relationship(self):
+        return u"%s >> %s" % (self.participant, self.recipient)
+        relationship.short_description = 'Rel'
+
     class Meta:
         ordering = ['gift_shipped']
         unique_together = ("participant", "recipient",)

@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
-from secretsanta.profiles.models import ParticipantProfile
+from secretsanta.profiles.models import ParticipantProfile, RecipientMap
 from secretsanta.profiles.forms import ParticipantProfileForm
 
 
@@ -20,12 +20,36 @@ def profile(request):
         return an error message.
     """
     template_name = 'profile.html'
+    form = None
+    profile = None
+    giftee = None
+    gifter = None
+    giftsent = None
 
     try:
         profile = request.user.get_profile()
-        form = None
+
+        # If this user has been assigned to send a gift to someone, 
+        # get that participant's profile information
+        # TODO: include a form so that the participant can mark a gift as shipped
+        try:
+            rma = RecipientMap.objects.get(participant=request.user.id)
+            giftee = rma.recipient.get_profile()
+        except ObjectDoesNotExist:
+            giftee = None
+
+        # If this user is set to receive a gift from someone, get the 
+        # date that gift was shipped
+        # TODO: include a form so that the recipient can mark a gift as received
+        try:
+            gs = RecipientMap.objects.get(recipient=request.user.id)
+            gifter = True
+            print gs.gift_shipped
+            giftsent = gs.gift_shipped
+        except ObjectDoesNotExist:
+            giftsent = None
+
     except ObjectDoesNotExist:
-        profile = None
         if request.method == 'POST':
             update_user = User.objects.get(username='%s' %request.user.username)
             if profile:
@@ -45,7 +69,7 @@ def profile(request):
             form = ParticipantProfileForm(instance=profile)
             form.email = request.user.email
 
-    data = { 'profile': profile, 'form': form, }
+    data = { 'profile': profile, 'form': form, 'giftee': giftee, 'gifter': gifter, 'giftsent': giftsent }
 
     return render_to_response(template_name, 
                               data, 

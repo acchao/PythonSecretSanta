@@ -3,7 +3,7 @@
     "model": "profiles.participantprofile",
     "pk": 1,
     "fields": {
-      "user": 1,
+      "user": 2,
       "first_name": "TestUser",
       "last_name": "One",
       "address": "815 Main Street",
@@ -21,7 +21,7 @@
     "model": "profiles.participantprofile",
     "pk": 2,
     "fields": {
-      "user": 2,
+      "user": 3,
       "first_name": "TestUser",
       "last_name": "Two",
       "address": "952 Main Street",

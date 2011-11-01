@@ -18,7 +18,7 @@ class CustomParticipantProfileForm(forms.ModelForm):
         model = ParticipantProfile
 
 class ParticipantProfileAdmin(admin.ModelAdmin):
-    list_display = ('fullname','id','social_proof_verified',)
+    list_display = ('fullname','id','user','social_proof_verified',)
     # readonly_fields=('user',)
     form = CustomParticipantProfileForm
 
@@ -29,7 +29,7 @@ class ParticipantProfileAdmin(admin.ModelAdmin):
 
 class RecipientMapAdmin(admin.ModelAdmin):
     list_filter = ('gift_shipped','gift_received')
-    list_display = ('participant','recipient','gift_shipped','gift_received')
+    list_display = ('relationship', 'gift_shipped','gift_received')
 
 admin.site.register(ParticipantProfile, ParticipantProfileAdmin)
 admin.site.register(RecipientMap, RecipientMapAdmin)

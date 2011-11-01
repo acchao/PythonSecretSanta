@@ -28,12 +28,13 @@ def assign(participant):
         print "No available gift recipient"
         sys.exit()
 
+
     # Add'l check to ensure participant is not assigned to more than one recipient
     try:
-        r = RecipientMap.objects.get(participant=participant.id)
+        r = RecipientMap.objects.get(participant=participant.user_id)
     except RecipientMap.DoesNotExist:
         # Create the recipientmap record, assigning the participant to a gift recipient
-        m = RecipientMap(participant_id=participant.pk, recipient_id=recipient.pk)
+        m = RecipientMap(participant_id=participant.user_id, recipient_id=recipient.user_id)
         m.save()
 
     # Select the profile data where user_id = recipient_id and return as 'giftmap'

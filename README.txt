@@ -18,11 +18,6 @@ Sites to link to:
 - maker store
 - http://hackerthings.com/
 
-
-TODO:
-
-profiles/models.py - decide how to label this social_proof field in the forms
-
 Proposed recipient assignment algorithm:
     When a user's 'proof of involvement' is marked as verified, he/she becomes eligible to receive a gift.
     The next user marked as verified will be assigned as a gifter to the most recent previous user who:
@@ -33,6 +28,16 @@ Proposed recipient assignment algorithm:
         - the gifter's profile should also display the recipient's contact info, likes/dislikes
         - the giftee's profile should indicate that he/she has been matched with a gift sender, nothing else
 
+
+TODO:
+
+profiles/models.py - decide how to label this social_proof field in the forms
+
+In the profile view: 
+    include a form so that the participant can mark a gift as shipped
+    include a form so that the recipient can mark a gift as received
+
+Gift recipient assignment:
     Figure out how to handle the case where there is not an available gift recipient
         (This case is only expected to occur on the very first gifter-giftee assignment.)
 

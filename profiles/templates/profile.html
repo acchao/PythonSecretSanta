@@ -68,16 +68,33 @@
       </div>
 
       <div style="float: left; margin-left: 20px;">
-      <!-- TODO: populate these two blocks with sender/recipient data -->
       {% if giftee %}
-        Send a gift to this person:<br /><br />
-        Your giftee's likes/wish lists:<br /><br />
-        And dislikes:<br /><br />
+        Send a gift to this person:<br />
+        <ul>
+          {{ giftee.first_name }} {{ giftee.last_name }}<br />
+          {{ giftee.address }}<br />
+          {{ giftee.city }} {{ giftee.state }} {{ giftee.postal_code }}<br />
+          {{ giftee.country }}<br />
+        </ul>
+        Your giftee's likes/wish lists:<br />
+        <ul>
+          {{ giftee.likes }}<br />
+        </ul>
+        And dislikes:<br />
+        <ul>
+          {{ giftee.dislikes }}
+        </ul>
         Form: check here when you have sent your gift<br /><br />
       {% endif %}
+
       {% if gifter %}
-        You'll be getting a gift, but we can't tell you who it's from.<br /><br />
-        {% if giftsent %}Your gift was sent on this date: {% endif %}
+          You'll be getting a gift, but we can't tell you who it's from.<br /><br />
+          {% if giftsent %}
+            Good news! Your gift was shipped on this date:<br />
+            <ul>
+              {{ giftsent }}
+            </ul>
+          {% endif %}
       {% endif %}
       </div>
 
