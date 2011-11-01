@@ -11,6 +11,14 @@
 <!-- default content -->
 {% endblock %}
 
+<br clear="all">
+{% if user.id %}
+    <a href="/logout/">log out</a><br />
+{% else %}
+    <a href="/login/">log in</a><br />
+{% endif %}
+{% if user.is_superuser and user.is_staff %}<a href="/admin/">ADMIN</a>{% endif %}<br />
+
 </body>
 </html>
 
