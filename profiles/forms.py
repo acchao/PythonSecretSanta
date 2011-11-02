@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from secretsanta.profiles.models import ParticipantProfile
+from secretsanta.profiles.models import ParticipantProfile, RecipientMap
 from secretsanta.profiles.data.countries import countries
 
 class ParticipantProfileForm(ModelForm):
@@ -29,4 +29,16 @@ class ParticipantProfileForm(ModelForm):
         model = ParticipantProfile
         exclude = ('user',)
 
+
+class RecipientMapForm(ModelForm):
+
+    shipped = forms.BooleanField()
+    received = forms.BooleanField()
+    id = forms.IntegerField(widget=forms.HiddenInput())
+    gift_shipped = forms.DateField(widget=forms.HiddenInput())
+    gift_received = forms.DateField(widget=forms.HiddenInput())
+
+    class Meta:
+        model = RecipientMap
+        exclude = ('participant','recipient',)
 

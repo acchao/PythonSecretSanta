@@ -9,7 +9,7 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 
 from secretsanta.profiles.models import ParticipantProfile, RecipientMap
-from secretsanta.profiles.forms import ParticipantProfileForm
+from secretsanta.profiles.forms import ParticipantProfileForm, RecipientMapForm
 
 
 @login_required
@@ -21,34 +21,63 @@ def profile(request):
     """
     template_name = 'profile.html'
     form = None
+    rform = None
+    sform = None
     profile = None
     giftee = None
     gifter = None
-    giftsent = None
 
     try:
         profile = request.user.get_profile()
 
         # If this user has been assigned to send a gift to someone, 
         # get that participant's profile information
-        # TODO: include a form so that the participant can mark a gift as shipped
         try:
-            rma = RecipientMap.objects.get(participant=request.user.id)
-            giftee = rma.recipient.get_profile()
+            sender = RecipientMap.objects.get(participant=request.user.id)
+            giftee = sender.recipient.get_profile()
+            if sender.gift_received:
+                giftee.received = sender.gift_received
+            # if the gift has already been shipped, return the ship date
+            # or include a form so the participant can mark the gift as shipped
+            if sender.gift_shipped:
+                giftee.sent = sender.gift_shipped
+            else:
+                sform = RecipientMapForm(instance=sender)
         except ObjectDoesNotExist:
             giftee = None
 
-        # If this user is set to receive a gift from someone, get the 
-        # date that gift was shipped
-        # TODO: include a form so that the recipient can mark a gift as received
+        # If this user is set to receive a gift from someone, 
+        # get the date that gift was shipped
         try:
-            gs = RecipientMap.objects.get(recipient=request.user.id)
-            gifter = True
-            print gs.gift_shipped
-            giftsent = gs.gift_shipped
+            receiver = RecipientMap.objects.get(recipient=request.user.id)
+            gifter = receiver.recipient.get_profile()
+            if receiver.gift_shipped:
+                gifter.sent = receiver.gift_shipped
+            # If the gift has already been received, return the received date
+            # or include a form so the recipient can mark the gift as received
+            if receiver.gift_received:
+                gifter.received = receiver.gift_received
+            else:
+                rform = RecipientMapForm(instance=receiver)
         except ObjectDoesNotExist:
-            giftsent = None
+            gifter = None
 
+        if request.method == 'POST':
+            update_rmap = RecipientMap.objects.get(id=request.POST['id'])
+            import datetime
+            now = datetime.datetime.now()
+
+            if "shipped" in request.POST:
+                update_rmap.gift_shipped = now
+                update_rmap.save()
+                return HttpResponseRedirect('/')
+
+            if "received" in request.POST:
+                update_rmap.gift_received = now
+                update_rmap.save()
+                return HttpResponseRedirect('/')
+
+    # create a new profile if one does not exist
     except ObjectDoesNotExist:
         if request.method == 'POST':
             update_user = User.objects.get(username='%s' %request.user.username)
@@ -69,7 +98,8 @@ def profile(request):
             form = ParticipantProfileForm(instance=profile)
             form.email = request.user.email
 
-    data = { 'profile': profile, 'form': form, 'giftee': giftee, 'gifter': gifter, 'giftsent': giftsent }
+    data = { 'profile': profile, 'form': form, 'rform': rform, 'sform': sform, 
+             'giftee': giftee, 'gifter': gifter, }
 
     return render_to_response(template_name, 
                               data, 

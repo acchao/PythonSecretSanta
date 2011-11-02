@@ -31,11 +31,7 @@ Proposed recipient assignment algorithm:
 
 TODO:
 
-profiles/models.py - decide how to label this social_proof field in the forms
-
-In the profile view: 
-    include a form so that the participant can mark a gift as shipped
-    include a form so that the recipient can mark a gift as received
+profile view - decide how to label the social_proof field in the forms
 
 Gift recipient assignment:
     Figure out how to handle the case where there is not an available gift recipient
@@ -48,5 +44,6 @@ dates:
     b. Deadline for shipping a gift (No way to enforce this of course, but recommending a date might encourage accountability - if a user does not mark his gift as shipped by this date, what happens? Anything?)
     c. Deadline for receiving a gift (Not so much a deadline as an expected date.  If a giftee has not received his gift by a certain date, is there any recourse against the gifter?)
     
-Probably need some kind of privacy policy, or language to remind users that their personal contact information will be visible to another user.
-
+Language:
+    need some kind of privacy policy, or language to remind users that their personal contact information will be visible to another user.
+    how-to/instructions

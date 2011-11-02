@@ -84,16 +84,34 @@
         <ul>
           {{ giftee.dislikes }}
         </ul>
-        Form: check here when you have sent your gift<br /><br />
+        {% if giftee.sent %}
+            You sent your gift on: {{ giftee.sent }}<br />
+            {% if giftee.received %}
+                Your gift was received on: {{ giftee.received }}<br />
+            {% endif %}
+        {% else %}
+            <form enctype="multipart/form-data" action="." name="sform" method="post">{% csrf_token %}
+                Check here when you have sent your gift:  {{ sform.shipped }}<br /><br />
+                {{ sform.id }}
+                <input type="submit" value="Submit" /><br />
+            </form>
+        {% endif %}
       {% endif %}
 
       {% if gifter %}
+          <br /><hr><br />
           You'll be getting a gift, but we can't tell you who it's from.<br /><br />
-          {% if giftsent %}
-            Good news! Your gift was shipped on this date:<br />
-            <ul>
-              {{ giftsent }}
-            </ul>
+          {% if gifter.sent %}
+            Good news! Your gift was shipped on: {{ gifter.sent }}<br /><br />
+            {% if gifter.received %}
+                You marked your gift as received on: {{ gifter.received }}<br />
+            {% else %}
+                <form enctype="multipart/form-data" action="." name="rform" method="post">{% csrf_token %}
+                    Check here when you have received your gift:  {{ rform.received }}<br /><br />
+                    {{ rform.id }}
+                    <input type="submit" value="Submit" /><br />
+                </form>
+            {% endif %}
           {% endif %}
       {% endif %}
       </div>
